@@ -4,12 +4,7 @@ require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 const port = process.env.PORT || 5000;
-const users = [
-  { id: 1, name: "Sabana", email: "sabana@gmail.com" },
-  { id: 2, name: "kahan", email: "sdf@gmail.com" },
-  { id: 3, name: "ratab", email: "sabsdfana@gmail.com" },
-  { id: 4, name: "Safghsbana", email: "asd@gmail.com" },
-];
+
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -40,9 +35,9 @@ async function run() {
       const result = await craftsCollection.insertOne(carftitem);
       res.send(result);
     });
-
+    // GET maximum 6 data for art and craft senctions
     app.get("/craftsitems", async (req, res) => {
-      const cursor = craftsCollection.find();
+      const cursor = craftsCollection.find().limit(6);
       const result = await cursor.toArray();
       res.send(result);
     });
@@ -51,6 +46,12 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await craftsCollection.findOne(query);
+      res.send(result);
+    });
+    // getting all data for All art and craft Items Page
+    app.get("/allartcraftitems", async (req, res) => {
+      const cursor = craftsCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
 
