@@ -55,6 +55,15 @@ async function run() {
       res.send(result);
     });
 
+    // GET all  data of particular user  for my arts and crafts
+    app.get("/mycraftitems/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { user_email: email };
+      const cursor = craftsCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.get("/", (req, res) => {
       res.send("users Management server is runnning");
     });
