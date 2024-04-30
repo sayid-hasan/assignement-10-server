@@ -85,7 +85,7 @@ async function run() {
           sub_category_name: item.sub_category_name,
           price: item.price,
           rating: item.rating,
-          customzation: item.customzation,
+          customization: item.customization,
           processing_time: item.processing_time,
           short_description: item.short_description,
           stock_status: item.stock_status,
