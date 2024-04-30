@@ -32,6 +32,33 @@ async function run() {
     const categoriesItemsCollection = client
       .db("CraftsDB")
       .collection("categoris");
+    // DATA FOR manually insertion
+    const docs = [
+      {
+        image: "https://i.ibb.co/6n8pQqp/landscape-painting.jpg",
+        sub_category_name: "Landscape Painting",
+      },
+      {
+        image: "https://i.ibb.co/PgWRn5C/Portrait-drawing.jpg",
+        sub_category_name: "Portrait Drawing",
+      },
+      {
+        image: "https://i.ibb.co/njN3TxP/Watercolour-Painting.jpg",
+        sub_category_name: "Watercolour Painting",
+      },
+      {
+        image: "https://i.ibb.co/ncRn5VR/Oil-Painting.jpg",
+        sub_category_name: "Oil Painting",
+      },
+      {
+        image: "https://i.ibb.co/0JKT8Y4/Charcoal-Sketching.jpg",
+        sub_category_name: "Charcoal Sketching",
+      },
+      {
+        image: "https://i.ibb.co/JRW5yL6/Cartoon-Drawing.jpg",
+        sub_category_name: "Cartoon Drawing",
+      },
+    ];
 
     app.post("/craftsitem", async (req, res) => {
       const carftitem = req.body;
@@ -110,33 +137,6 @@ async function run() {
     });
     // postin data manullay categories section
     app.post("/categories", async (req, res) => {
-      const docs = [
-        {
-          image: "https://i.ibb.co/6n8pQqp/landscape-painting.jpg",
-          sub_category_name: "Landscape Painting",
-        },
-        {
-          image: "https://i.ibb.co/PgWRn5C/Portrait-drawing.jpg",
-          sub_category_name: "Portrait Drawing",
-        },
-        {
-          image: "https://i.ibb.co/njN3TxP/Watercolour-Painting.jpg",
-          sub_category_name: "Watercolour Painting",
-        },
-        {
-          image: "https://i.ibb.co/ncRn5VR/Oil-Painting.jpg",
-          sub_category_name: "Oil Painting",
-        },
-        {
-          image: "https://i.ibb.co/0JKT8Y4/Charcoal-Sketching.jpg",
-          sub_category_name: "Charcoal Sketching",
-        },
-        {
-          image: "https://i.ibb.co/JRW5yL6/Cartoon-Drawing.jpg",
-          sub_category_name: "Cartoon Drawing",
-        },
-      ];
-
       const result = await categoriesItemsCollection.insertMany(docs);
       res.send(result);
     });
@@ -144,6 +144,15 @@ async function run() {
 
     app.get("/categoriesItems", async (req, res) => {
       const cursor = categoriesItemsCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    // GET all  data of particular subcategory  for categroies section
+    app.get("/mycraftitems/:subcategory", async (req, res) => {
+      const subcategory = req.query.subcategory;
+      const query = { sub_category_name: subcategory };
+      console.log(subcategory);
+      const cursor = categoriesItemsCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
