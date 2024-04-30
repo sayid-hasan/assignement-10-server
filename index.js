@@ -29,6 +29,9 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
 
     const craftsCollection = client.db("CraftsDB").collection("crafts");
+    const categoriesItemsCollection = client
+      .db("CraftsDB")
+      .collection("categoris");
 
     app.post("/craftsitem", async (req, res) => {
       const carftitem = req.body;
@@ -98,16 +101,50 @@ async function run() {
       );
       res.send(result);
     });
-    // GET all  data of based on customization  for my arts and crafts
-    app.get("/mycraftitems/:customization", async (req, res) => {
-      const customization = req.body;
-      console.log(customization);
-    });
 
     app.delete("/updateItem/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await craftsCollection.deleteOne(query);
+      res.send(result);
+    });
+    // postin data manullay categories section
+    app.post("/categories", async (req, res) => {
+      const docs = [
+        {
+          image: "https://i.ibb.co/6n8pQqp/landscape-painting.jpg",
+          sub_category_name: "Landscape Painting",
+        },
+        {
+          image: "https://i.ibb.co/PgWRn5C/Portrait-drawing.jpg",
+          sub_category_name: "Portrait Drawing",
+        },
+        {
+          image: "https://i.ibb.co/njN3TxP/Watercolour-Painting.jpg",
+          sub_category_name: "Watercolour Painting",
+        },
+        {
+          image: "https://i.ibb.co/ncRn5VR/Oil-Painting.jpg",
+          sub_category_name: "Oil Painting",
+        },
+        {
+          image: "https://i.ibb.co/0JKT8Y4/Charcoal-Sketching.jpg",
+          sub_category_name: "Charcoal Sketching",
+        },
+        {
+          image: "https://i.ibb.co/JRW5yL6/Cartoon-Drawing.jpg",
+          sub_category_name: "Cartoon Drawing",
+        },
+      ];
+
+      const result = await categoriesItemsCollection.insertMany(docs);
+      res.send(result);
+    });
+    // getting data for categories section
+
+    app.get("/categoriesItems", async (req, res) => {
+      const cursor = categoriesItemsCollection.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
 
