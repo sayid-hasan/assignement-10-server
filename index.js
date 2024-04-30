@@ -98,6 +98,11 @@ async function run() {
       );
       res.send(result);
     });
+    // GET all  data of based on customization  for my arts and crafts
+    app.get("/mycraftitems/:customization", async (req, res) => {
+      const customization = req.body;
+      console.log(customization);
+    });
 
     app.delete("/updateItem/:id", async (req, res) => {
       const id = req.params.id;
