@@ -99,6 +99,13 @@ async function run() {
       res.send(result);
     });
 
+    app.delete("/updateItem/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await craftsCollection.deleteOne(query);
+      res.send(result);
+    });
+
     app.get("/", (req, res) => {
       res.send("users Management server is runnning");
     });
